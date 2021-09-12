@@ -137,25 +137,31 @@ class _CountDownTimerState extends State<CountDownTimer> {
       Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          ElevatedButton(
-            //ストップボタン
-            child: const Icon(Icons.pause),
-            style: ElevatedButton.styleFrom(),
-            onPressed: _isStopButtonDisable
-                ? null
-                : () {
-                    _offTimer();
-                  },
+          Visibility(
+            child: ElevatedButton(
+              //ストップボタン
+              child: const Icon(Icons.pause),
+              style: ElevatedButton.styleFrom(),
+              onPressed: _isStopButtonDisable
+                  ? null
+                  : () {
+                      _offTimer();
+                    },
+            ),
+            visible: !_isStopButtonDisable,
           ),
-          ElevatedButton(
-            //スタートボタン
-            child: const Icon(Icons.play_arrow),
-            style: ElevatedButton.styleFrom(),
-            onPressed: _isStartButtonDisable
-                ? null
-                : () {
-                    _onTimer(_mode);
-                  },
+          Visibility(
+            child: ElevatedButton(
+              //スタートボタン
+              child: const Icon(Icons.play_arrow),
+              style: ElevatedButton.styleFrom(),
+              onPressed: _isStartButtonDisable
+                  ? null
+                  : () {
+                      _onTimer(_mode);
+                    },
+            ),
+            visible: !_isStartButtonDisable,
           ),
         ],
       ),
