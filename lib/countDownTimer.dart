@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:intl/intl.dart';
+import 'package:pomorodo_project/alert.dart';
 
 class CountDownTimer extends StatefulWidget {
   const CountDownTimer({Key? key}) : super(key: key);
@@ -54,7 +55,7 @@ class _CountDownTimerState extends State<CountDownTimer> {
     super.initState();
   }
 
-  void _onTimer(_TimeModeState _timerMode) {
+  void _onTimer(_TimeModeState _timerMode, BuildContext context) {
     // タイマー起動
     setState(() {
       //状態を変更
@@ -83,6 +84,8 @@ class _CountDownTimerState extends State<CountDownTimer> {
             //時間が0になったら
             _offTimer(); //タイマーストップ
             _modeSwitch(_timerMode); //モード切り替え
+            Alert _alert = Alert();
+            _alert.openDialog(context);
             return; //関数終わり
           }
           _setTime = _setTime.add(Duration(seconds: -1));
@@ -158,7 +161,7 @@ class _CountDownTimerState extends State<CountDownTimer> {
               onPressed: _isStartButtonDisable
                   ? null
                   : () {
-                      _onTimer(_mode);
+                      _onTimer(_mode, context);
                     },
             ),
             visible: !_isStartButtonDisable,
