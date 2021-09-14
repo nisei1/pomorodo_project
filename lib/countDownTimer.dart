@@ -77,17 +77,22 @@ class _CountDownTimerState extends State<CountDownTimer> {
     _timer = Timer.periodic(
       //タイマー開始
       Duration(seconds: 1), //一秒ごとに関数を実行
-      (Timer timer) {
-        setState(() {
-          //状態を変更
-          if (_setTime == DateTime.utc(0, 0, 0)) {
-            //時間が0になったら
-            _offTimer(); //タイマーストップ
-            _modeSwitch(_timerMode); //モード切り替え
-            Alert _alert = Alert();
-            _alert.openDialog(context);
-            return; //関数終わり
+      (Timer timer) async {
+        //状態を変更
+        if (_setTime == DateTime.utc(0, 0, 0)) {
+          //時間が0になったら
+          _offTimer(); //タイマーストップ
+          _modeSwitch(_timerMode); //モード切り替え
+          StopOrNextAlert _alert = StopOrNextAlert(); //アラートのインスタンス作成
+          await _alert.timeIsUpAlert(context); //アラートを出すawaitでこの処理を待つ
+          //アラートにあるボタンの答えNEXT=true,STOP=false
+          if (_alert.answer == true) {
+            //NEXTをおしたなら
+            _onTimer(_mode, context); //もう一度タイマーを起動
           }
+          return; //関数終わり
+        }
+        setState(() {
           _setTime = _setTime.add(Duration(seconds: -1));
         });
       },
