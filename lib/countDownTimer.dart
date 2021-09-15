@@ -18,7 +18,7 @@ enum _TimeModeState {
 
 class _CountDownTimerState extends State<CountDownTimer> {
   String _timerModeStr = ""; //勉強時間か休憩時間か表示用変数
-  var _timer; //Timer型
+  late Timer _timer; //Timer型
   _TimeModeState _mode = _TimeModeState.study;
 
   DateTime _setTime = DateTime.utc(0, 0, 0); //使用する時間を代入するための変数
@@ -63,15 +63,17 @@ class _CountDownTimerState extends State<CountDownTimer> {
       _isStopButtonDisable = false;
     });
 
-    //タイマーモードによって使用する時間を切り替え,代入
-    if (_timerMode == _TimeModeState.study) {
-      setState(() {
-        _setTime = _studyTime;
-      });
-    } else {
-      setState(() {
-        _setTime = _restTime;
-      });
+    if (_setTime == DateTime.utc(0, 0, 0)) {  //もし時刻が0なら(タイマーが途中でない)
+      //タイマーモードによって使用する時間を切り替え,代入
+      if (_timerMode == _TimeModeState.study) {
+        setState(() {
+          _setTime = _studyTime;
+        });
+      } else {
+        setState(() {
+          _setTime = _restTime;
+        });
+      }
     }
 
     _timer = Timer.periodic(
@@ -105,7 +107,7 @@ class _CountDownTimerState extends State<CountDownTimer> {
     setState(() {
       _isStopButtonDisable = true;
       _isStartButtonDisable = false;
-      if (_timer != null && _timer.isActive) _timer.cancel(); //タイマーストップ
+      if (_timer.isActive) _timer.cancel(); //タイマーストップ
     });
     return;
   }
