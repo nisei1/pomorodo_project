@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:intl/intl.dart';
 import 'package:pomorodo_project/alert.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class CountDownTimer extends StatefulWidget {
   const CountDownTimer({Key? key}) : super(key: key);
@@ -18,7 +19,7 @@ enum _TimeModeState {
 
 class _CountDownTimerState extends State<CountDownTimer> {
   String _timerModeStr = ""; //勉強時間か休憩時間か表示用変数
-  var _timer; //Timer型
+  late Timer _timer; //Timer型
   _TimeModeState _mode = _TimeModeState.study;
 
   DateTime _setTime = DateTime.utc(0, 0, 0); //使用する時間を代入するための変数
@@ -36,6 +37,10 @@ class _CountDownTimerState extends State<CountDownTimer> {
   bool _isStartButtonDisable = false; //スタートボタンが無効かどうか
   bool _isStopButtonDisable = true; //ストップボタンが無効がどうか
 
+  //進捗状況を保存するために使う変数
+  int _dateTimeDiffarence = 0; //勉強した時刻の差を格納
+  late SharedPreferences _preferences;
+
   @override
   void initState() {
     //初期化処理
@@ -52,6 +57,9 @@ class _CountDownTimerState extends State<CountDownTimer> {
     ));
 
     _setTime = _studyTime;
+
+    _initPreferences();
+
     super.initState();
   }
 
@@ -78,7 +86,11 @@ class _CountDownTimerState extends State<CountDownTimer> {
       //タイマー開始
       Duration(seconds: 1), //一秒ごとに関数を実行
       (Timer timer) async {
-        //状態を変更
+        if (_timerMode == _TimeModeState.study) {
+          _dateTimeDiffarence = _studyTime.difference(_setTime).inSeconds;
+        } else {
+          _dateTimeDiffarence = 0;
+        }
         if (_setTime == DateTime.utc(0, 0, 0)) {
           //時間が0になったら
           _offTimer(); //タイマーストップ
@@ -89,9 +101,11 @@ class _CountDownTimerState extends State<CountDownTimer> {
           if (_alert.answer == true) {
             //NEXTをおしたなら
             _onTimer(_mode, context); //もう一度タイマーを起動
+            return;
           }
           return; //関数終わり
         }
+        //状態を変更
         setState(() {
           _setTime = _setTime.add(Duration(seconds: -1));
         });
@@ -105,8 +119,9 @@ class _CountDownTimerState extends State<CountDownTimer> {
     setState(() {
       _isStopButtonDisable = true;
       _isStartButtonDisable = false;
-      if (_timer != null && _timer.isActive) _timer.cancel(); //タイマーストップ
+      if (_timer.isActive) _timer.cancel(); //タイマーストップ
     });
+    _setPreferences(_dateTimeDiffarence);
     return;
   }
 
@@ -127,6 +142,22 @@ class _CountDownTimerState extends State<CountDownTimer> {
       });
       return;
     }
+  }
+
+  Future<void> _initPreferences() async {
+    _preferences = await SharedPreferences.getInstance();
+    await _preferences.setInt("progress_time_key", 0);
+    return;
+  }
+
+  Future<void> _setPreferences(int _setInt) async {
+    // SharedPreferencesに値を設定.
+    int _progressTime = 0;
+    _progressTime = _preferences.getInt("progress_time_key")!; //進捗時間を取得
+    int _addedTime = _progressTime + _setInt; //経過した時間と進捗時間を加算
+    await _preferences.setInt("progress_time_key", _addedTime); //SET
+    print(_preferences.getInt("progress_time_key"));
+    return;
   }
 
   @override
