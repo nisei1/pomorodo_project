@@ -1,16 +1,32 @@
-# pomorodo_project
+# Pomorodo Timer in Flutter
+#### Video Demo:  https://youtu.be/jXDY7f-tWYY
+#### Description:
+【作ったものの紹介】
+・ポモドーロタイマー
+    ・ポモドーロ・テクニック
+    ・時間管理をしやすくするタイマー
+    ・２５分の作業時間ー＞５分の休憩時間を繰り返す
+    ・時間を分割し作業効率を上げる
 
-A new Flutter project.
+【使用技術】
+・Flutter
+    ・一つのソースコードでweb,ios,android用にアプリケーションをビルドすることができるため、私にはとても魅力的だった
 
-## Getting Started
+【工夫した点】
+・ダークテーマを採用
+    ・目に優しく
+・シンプルなUI
+・音とダイアログで時間終了を通知
+・PWAに対応
+    ・flutterのおかげ
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+【難しかった点】
+・Flutterに初めて挑戦
+    ・学習に時間が掛かった
+    ・一つの機能を作るだけでも相当の時間を要した
+・オブジェクト指向プログラミング
+    ・クラスを活用しようと意識する
+    ・上手く抽象化できず時間だけが過ぎた
+・目標としていた機能を実装することができなかった
+    ・学習コストが大きすぎた
+    ・アプリ自体は簡素なものになった

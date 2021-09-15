@@ -25,12 +25,12 @@ class _CountDownTimerState extends State<CountDownTimer> {
   //勉強時間設定に使う変数
   int _studyTimeHour = 0; //勉強したいHour
   int _studyTimeMinute = 0; //勉強したいMinute
-  int _studyTimeSec = 3; //勉強したいSecond
+  int _studyTimeSec = 2; //勉強したいSecond
   DateTime _studyTime = DateTime.utc(0, 0, 0); //勉強する時間
   //休憩時間設定に使う変数
   int _restTimeHour = 0; //休憩したいHour
-  int _restTimeMinute = 0; //休憩したいMinute
-  int _restTimeSec = 2; //休憩したいSecond
+  int _restTimeMinute = 5; //休憩したいMinute
+  int _restTimeSec = 0; //休憩したいSecond
   DateTime _restTime = DateTime.utc(0, 0, 0); //休憩する時間
 
   bool _isStartButtonDisable = false; //スタートボタンが無効かどうか
